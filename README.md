@@ -1,29 +1,99 @@
-# FedPer-Brain-tumor-segmentation
+# FedPer - Brain Tumor Segmentation
 
-Federated learning framework in Brain tumor segmentation for more privacy. The model was trained on the lgg-MRI segmentation dataset and used a ResNet model. A Federated learning pipeline was introduced so that the patient’s privacy is maintained. It gave similar accuracy to that of Centralized Learning.
+Federated learning framework for brain tumor segmentation to ensure patient privacy. This project utilizes the **lgg-MRI segmentation dataset** and a **ResNet model**. A Federated Learning pipeline is introduced to maintain patient privacy while achieving comparable accuracy to centralized learning.
 
-#Introduction
-Accurate brain tumor segmentation from MRI scans is essential for clinical decision-making, enabling detailed assessment and planning of treatments. However, large-scale datasets required to train robust segmentation models are often stored across different institutions, making it difficult to build a centralized model without violating patient privacy. Traditional methods in medical image segmentation, such as UNet (Ronneberger et al., 2015), have achieved success in medical image analysis, yet these methods typically assume centralized data sources.
-Federated learning offers a solution by allowing multiple institutions to collaboratively train models on their own data while keeping the data decentralized and private. Despite this, federated learning faces significant challenges due to data heterogeneity (Kairouz et al., 2021), where each institution’s dataset may differ in terms of imaging protocols, patient demographics, and other factors. To address this challenge, FedPer (Karimireddy et al., 2020) will be employed to personalize models for each institution. This project aims to evaluate federated learning with FedPer against a traditional centralized learning approach to assess the trade-offs between privacy and model performance.
-Related Work
-Previous studies have focused on brain tumor segmentation using deep learning techniques, particularly UNet and Mask R-CNN, for tasks like brain tumor detection and volumetric segmentation (Menze et al., 2015). However, most of these methods rely on centralized data, which is not feasible due to privacy and regulatory concerns in healthcare.
-Federated learning has been increasingly applied in medical image analysis to train models without aggregating data. Kairouz et al. (2021) explored federated learning as a solution to preserve privacy across medical institutions. However, a key challenge of federated learning in medical contexts is handling non-IID data, where datasets across institutions may vary significantly (Li et al., 2020). FedPer (Karimireddy et al., 2020) was introduced to address this issue by enabling personalized models while benefiting from shared global knowledge.
-This project extends previous work by incorporating FedPer in the context of 3D brain tumor segmentation, which has not been extensively explored in federated learning setups for medical image segmentation.
-Technical Approach
-This project will employ Federated Learning using the UNet architecture for 3D brain tumor segmentation, integrated with FedPer to address the challenges of non-heterogeneous data. The technical approach is outlined in the following steps:
- 1. Data Preparation and Local Training:
-● Each institution (client) will preprocess its own set of MRI scans from the BraTS dataset. The dataset includes various tumor types, such as enhancing tumors, edema, and necrosis, with pixel-wise annotations.
-● The UNet model, adapted for 3D data, will be trained locally at each institution. This model is effective for medical image segmentation tasks, especially for volumetric data like MRI scans (Ronneberger et al., 2015).
-2. Federated Model Aggregation with FedPer:
-● FedPer will be used to personalize the model for each institution. The encoder layers of the model will be shared across institutions, while each institution will maintain personalized segmentation heads, enabling them to retain domain-specific knowledge while benefiting from shared global knowledge (Karimireddy et al., 2020).
-● This strategy helps manage non-heterogeneous data by allowing each institution to retain specialized knowledge while collaborating with others, resulting in a more robust global model.
-3. Global Model Updating and Broadcasting:
-● After local training, the shared encoder layers will be aggregated on the server. The updated global model will then be broadcast back to each client, where they will update their personalized segmentation heads with the latest global model information.
-4. Centralized Learning Approach:
-● In parallel, a centralized learning model will be trained using the aggregated BraTS dataset, collected and processed centrally. This will provide a baseline for evaluating the federated learning approach and its privacy-preserving capabilities.
-5. Evaluation and Optimization:
-● Model performance will be evaluated using standard metrics such as Dice coefficient and Intersection over Union (IoU) for both federated and centralized learning models. Hyperparameters will be tuned to optimize the federated model’s performance while ensuring it handles the non-IID data effectively.
-Dataset Description
-The BraTS Dataset (Menze et al., 2015) contains 3D MRI scans of brain tumors, with detailed pixel-wise annotations for various tumor regions, including enhancing tumors,
-edema, and necrosis. This dataset is widely used in medical image segmentation research and serves as an ideal candidate for federated learning.
-The dataset contains a variety of brain tumor types, ensuring diversity for robust model training. Each MRI scan is accompanied by segmentation masks that provide precise tumor boundaries. The data will be preprocessed and used to train the federated learning model across multiple institutions.
+---
+
+## 📚 **Introduction**
+
+Accurate brain tumor segmentation from MRI scans is essential for clinical decision-making, enabling detailed assessment and planning of treatments. However, datasets required for robust segmentation models are often distributed across institutions, making centralized data collection infeasible due to privacy concerns.
+
+**Federated Learning** offers a solution by enabling institutions to collaboratively train models without centralizing data. However, challenges such as data heterogeneity across institutions persist. 
+
+This project employs **FedPer** to address these challenges by personalizing models while sharing global knowledge. The project evaluates **FedPer** against traditional centralized learning to balance privacy with model performance.
+
+---
+
+## 📖 **Related Work**
+
+- **Traditional Methods**: Deep learning models like UNet (Ronneberger et al., 2015) and Mask R-CNN have shown success in brain tumor segmentation but rely on centralized data.
+- **Federated Learning**: Studies (e.g., Kairouz et al., 2021) highlight federated learning as a privacy-preserving alternative. However, handling non-IID data remains a challenge.
+- **FedPer**: Proposed by Karimireddy et al. (2020), FedPer personalizes models by sharing global knowledge while retaining institution-specific expertise.
+
+This project extends prior work by integrating **FedPer** with **3D brain tumor segmentation**, an area yet to be extensively explored.
+
+---
+
+## ⚙️ **Technical Approach**
+
+### 1️⃣ **Data Preparation and Local Training**
+- MRI scans from the **BraTS dataset** are preprocessed locally by each institution.
+- Each client trains a **3D UNet model** for brain tumor segmentation with pixel-wise annotations.
+
+### 2️⃣ **Federated Model Aggregation with FedPer**
+- **Shared Encoder**: The encoder is shared across institutions to capture global knowledge.
+- **Personalized Segmentation Heads**: Each institution maintains its own segmentation head to retain domain-specific knowledge.
+
+### 3️⃣ **Global Model Updates**
+- Shared encoder layers are aggregated on the server.
+- Updated global models are broadcasted back to clients for local updates.
+
+### 4️⃣ **Centralized Learning Baseline**
+- A centralized model is trained using the aggregated dataset to evaluate performance against the federated approach.
+
+### 5️⃣ **Evaluation and Optimization**
+- Metrics: Models are evaluated using **Dice Coefficient** and **Intersection over Union (IoU)**.
+- Optimization: Hyperparameter tuning ensures robust performance on non-IID data.
+
+---
+
+## 🗂️ **Dataset Description**
+
+The **BraTS Dataset** (Menze et al., 2015):
+- Contains 3D MRI scans with pixel-wise annotations for tumor regions:
+  - Enhancing Tumors
+  - Edema
+  - Necrosis
+- Includes diverse tumor types to ensure robust training.
+- Preprocessed and distributed across multiple institutions for federated training.
+
+---
+
+## 🧪 **Results**
+- **Federated Learning**:
+  - Privacy-preserving with comparable performance to centralized learning.
+- **Centralized Learning**:
+  - Baseline for performance comparison.
+
+**Key Metrics**:
+- **Dice Coefficient**
+- **IoU**
+
+---
+
+## 📈 **Conclusion**
+
+This project demonstrates the potential of **FedPer** in addressing challenges of data heterogeneity in federated learning, enabling robust and privacy-preserving 3D brain tumor segmentation.
+
+---
+
+## 🛠️ **References**
+1. Ronneberger, O., Fischer, P., & Brox, T. (2015). *UNet: Convolutional Networks for Biomedical Image Segmentation.*
+2. Kairouz, P., McMahan, H. B., et al. (2021). *Advances and Open Problems in Federated Learning.*
+3. Karimireddy, S. P., Kale, S., et al. (2020). *FedPer: Personalized Federated Learning.*
+
+---
+
+## 💡 **Acknowledgements**
+
+Special thanks to:
+- The creators of the **BraTS dataset**.
+- Researchers advancing federated learning methodologies.
+
+---
+
+## 📩 **Contact**
+
+For queries, feel free to reach out to:  
+**Email**: rakshekaraj@gmail.com  
+**GitHub**: https://github.com/rakshekaraj
